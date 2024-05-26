@@ -23,5 +23,5 @@ def reset_database():
     Employee.create("Hao", "New Hires Coordinator", human_resources.id)
 
 
-reset_database()
+
 ipdb.set_trace()

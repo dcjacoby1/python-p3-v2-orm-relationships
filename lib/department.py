@@ -50,6 +50,8 @@ class Department:
         CONN.commit()
 
         self.id = CURSOR.lastrowid
+        #type of self, will give the class name of the object
+        #adds the object to the all = {}, saves it in the backend, not just database
         type(self).all[self.id] = self
 
     @classmethod
@@ -139,3 +141,17 @@ class Department:
 
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
+
+    def employees(self):
+        """Return list of employees associated with current department"""
+        from employee import Employee
+        sql = """
+            SELECT * FROM employees
+            WHERE department_id = ?
+        """
+        CURSOR.execute(sql, (self.id,),)
+
+        rows = CURSOR.fetchall()
+        return [
+            Employee.instance_from_db(row) for row in rows
+        ]
